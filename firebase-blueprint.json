@@ -1,0 +1,101 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Authenticated user profile for LeadForge AI",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "photoURL": { "type": "string", "maxLength": 500 },
+        "plan": { "type": "string", "enum": ["starter", "pro", "agency"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "name"]
+    },
+    "Lead": {
+      "title": "B2B Lead",
+      "description": "B2B prospective company record with AI scores and enrichment",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "companyName": { "type": "string", "maxLength": 200 },
+        "industry": { "type": "string", "maxLength": 100 },
+        "location": { "type": "string", "maxLength": 100 },
+        "website": { "type": "string", "maxLength": 300 },
+        "email": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "companySize": { "type": "string", "maxLength": 50 },
+        "source": { "type": "string", "maxLength": 50 },
+        "leadScore": { "type": "number" },
+        "scoreCategory": { "type": "string", "enum": ["Low", "Moderate", "Good", "Hot"] },
+        "scoreBreakdown": { "type": "object" },
+        "aiAnalysis": { "type": "object" },
+        "recommendedServices": { "type": "array" },
+        "status": { "type": "string", "enum": ["New", "Contacted", "Replied", "Interested", "Converted", "Not Interested"] },
+        "campaignId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["ownerId", "companyName", "status"]
+    },
+    "Campaign": {
+      "title": "Lead Campaign",
+      "description": "Campaign for targeted prospect segment and outreach tracking",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "industry": { "type": "string", "maxLength": 100 },
+        "location": { "type": "string", "maxLength": 100 },
+        "service": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "leadCount": { "type": "number" },
+        "contactedCount": { "type": "number" },
+        "replyCount": { "type": "number" },
+        "interestedCount": { "type": "number" },
+        "convertedCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["ownerId", "name"]
+    },
+    "Outreach": {
+      "title": "Outreach Message",
+      "description": "AI-generated tailored outreach message for a lead",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "leadId": { "type": "string", "maxLength": 128 },
+        "campaignId": { "type": "string", "maxLength": 128 },
+        "channel": { "type": "string", "enum": ["Email", "WhatsApp", "LinkedIn"] },
+        "subject": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 5000 },
+        "tone": { "type": "string", "enum": ["Professional", "Friendly", "Personalized", "Concise"] },
+        "service": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["Draft", "Ready", "Sent"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["ownerId", "leadId", "channel", "message"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents owned by userId"
+    },
+    "/leads/{leadId}": {
+      "schema": "Lead",
+      "description": "B2B leads owned by ownerId"
+    },
+    "/campaigns/{campaignId}": {
+      "schema": "Campaign",
+      "description": "Campaigns owned by ownerId"
+    },
+    "/outreach/{outreachId}": {
+      "schema": "Outreach",
+      "description": "Outreach messages owned by ownerId"
+    }
+  }
+}
